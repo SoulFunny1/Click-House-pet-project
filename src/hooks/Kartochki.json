@@ -1,0 +1,42 @@
+[
+    {
+        "img": "./divan.svg",
+        "name": "Диван"
+    },
+    {
+        "img": "./Spalnya.svg",
+        "name": "Спальная"
+    },
+    {
+        "img": "./kitchen.svg",
+        "name": "Кухня"
+    },
+    {
+        "img": "./for Sad.svg",
+        "name": "Для сада"
+    },
+    {
+        "img": "./chair.svg",
+        "name": "Мебель"
+    },
+    {
+        "img": "./gigiena.svg",
+        "name": "Гигиена"
+    },
+    {
+        "img": "./for sport.svg",
+        "name": "Товары для отдыха"
+    },
+    {
+        "img": "./window.svg",
+        "name": "Зеркала"
+    },
+    {
+        "img": "./xranenie.svg",
+        "name": "Хранение и порядок"
+    },
+    {
+        "img": "./cook.svg",
+        "name": "Кухня и бытовая тех.."
+    }
+]
