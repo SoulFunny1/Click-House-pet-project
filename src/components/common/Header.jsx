@@ -7,7 +7,7 @@ export default function Header() {
         <header className="">
             <div className="bg-[#F8F8F8] flex justify-between">
                 <div className="p-4 mx-35">
-                    <img onClick={() => navigate("/")} src="/header clickhouse.svg" alt="" />
+                    <img onClick={() => navigate("/")} src="/header clickhouse.svg" alt="" className="cursor-pointer"/>
                 </div>
                 <div className="flex p-6 gap-6">
                     <p onClick={() => navigate("/catalog")} className="font-semibold cursor-pointer">Каталог</p>

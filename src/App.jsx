@@ -7,9 +7,11 @@ import HomePage from './pages/HomePage';
 import Menu from './components/common/Menu';
 import SideBar from './components/SideBar';
 import Catalog from './pages/Catalog';
+import Auth from './components/Auth';
 
 export default function App() {
   const [open, setOpen] = useState(false);
+  const [openAuth, setOpenAuth] = useState(false);
 
   return (
     <div>
@@ -18,10 +20,14 @@ export default function App() {
         onClick={() => setOpen(false)}
       ></div>
 
+
       <SideBar open={open} onClose={() => setOpen(false)} />
+      <Auth open={openAuth} onClose={() => setOpenAuth(false)} />
+
 
       <Header />
-      <Menu onOpen={() => setOpen(true)} />
+      <Menu onOpen={() => setOpen(true)} onOpenAuth={() => setOpenAuth(true)} />
+
 
       <Routes>
         <Route path="/" element={<HomePage />}  />

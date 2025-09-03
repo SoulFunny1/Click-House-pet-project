@@ -106,7 +106,7 @@ export default function HomePage() {
                 <div className="grid grid-cols-5 gap-5 p-2">
                     {Kartochki.map((item, index) => (
                         <div key={index} className="flex flex-col justify-center items-center border border-gray-300 w-[300px] h-[250px]  rounded-3xl shadow hover:shadow-lg transition">
-                            <img src={item.img} alt={item.name} className="px-10 object-contain max-h-full max-w-full" />
+                            <img src={item.img} alt={item.name} className="px-10 object-contain h-[150px] max-w-full" />
                             <div className='flex items-center'>
                                 <p className="mt-7 text-[18px] font-semibold">{item.name}</p>
                             </div>
@@ -182,7 +182,7 @@ export default function HomePage() {
                     {Nalichii.map((item, index) => (
                         <div
                             key={index}
-                            className="group relative w-80 bg-white border border-gray-300 rounded-3xl shadow hover:shadow-lg transition-transform transform hover:scale-105 cursor-pointer overflow-hidden"
+                            className="relative group  w-80 bg-white border border-gray-300 rounded-3xl shadow hover:shadow-lg transition-transform transform hover:scale-105 cursor-pointer overflow-hidden"
                         >
                             <div className="w-full h-80 flex items-center justify-center">
                                 <img
@@ -193,7 +193,7 @@ export default function HomePage() {
                             </div>
 
                             {item.skidka && (
-                                <div className="text-red-500 text-[18px] font-bold px-3 py-1 rounded-full">
+                                <div className="absolute bottom-[110px] text-red-500 text-[18px] font-bold px-4 py-1 rounded-full">
                                     {item.skidka}
                                 </div>
                             )}
