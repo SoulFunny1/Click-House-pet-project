@@ -46,9 +46,9 @@ export default function HomePage() {
 
                 </div>
 
-                <div className="">
+                <div className="relative">
                     {/* Левая стрелка */}
-                    <div className="absolute right-[1060px] top-[420px]" onClick={prevSlide}>
+                    <div className="absolute left-0 top-[50%]" onClick={prevSlide}>
                         <svg className='rotate-180' width="22" height="40" viewBox="0 0 22 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.78467 2.21484L19.8526 20.2828L1.78467 38.3508" stroke="white" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
@@ -56,7 +56,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Правая стрелка */}
-                    <div className="absolute right-[350px] top-[420px]" onClick={nextSlide}>
+                    <div className="absolute top-[50%] right-0" onClick={nextSlide}>
                         <svg  width="22" height="40" viewBox="0 0 22 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.78467 2.21484L19.8526 20.2828L1.78467 38.3508" stroke="white" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
@@ -64,21 +64,21 @@ export default function HomePage() {
                     </div>
 
                     {/* Точки */}
-                    <div className="absolute top-[650px] right-[630px]">
+                    <div className="absolute  bottom-[30px] left-[45%]">
                         <button
                             onClick={() => setCurrent(0)}
                             className={`w-[50px] h-[6px] rounded-full ${current === 0 ? "bg-[#FF9900]" : "bg-black"
                                 }`}
                         ></button>
                     </div>
-                    <div className="absolute top-[650px] right-[690px]">
+                    <div className="absolute bottom-[30px] left-[52%]">
                         <button
                             onClick={() => setCurrent(1)}
                             className={`w-[50px] h-[6px] rounded-full ${current === 1 ? "bg-[#FF9900]" : "bg-black"
                                 }`}
                         ></button>
                     </div>
-                    <div className="absolute top-[650px] right-[750px]">
+                    <div className="absolute bottom-[30px] left-[38%]">
                         <button
                             onClick={() => setCurrent(2)}
                             className={`w-[50px] h-[6px] rounded-full ${current === 2 ? "bg-[#FF9900]" : "bg-black"
@@ -88,7 +88,7 @@ export default function HomePage() {
 
                     {/* Картинка */}
                     <div>
-                        <img className='max-w-[786px] max-h-[487px]' src={slides[current]} alt="Slide" />
+                        <img className='object-contain w-[786px] h-[487px]' src={slides[current]} alt="Slide" />
                     </div>
                 </div>
             </header>
