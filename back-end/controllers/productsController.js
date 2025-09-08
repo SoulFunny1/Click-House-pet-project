@@ -56,15 +56,22 @@ module.exports = {
     // ✅ Удалить товар
     async deleteProduct(req, res) {
         try {
-            const { id } = req.params;
+            const { id } = req.body; // Берем id из тела запроса
+            if (!id) {
+                return res.status(400).json({ message: 'ID товара не передан' });
+            }
+
             const deleted = await Product.destroy({ where: { id } });
+
             if (!deleted) {
                 return res.status(404).json({ message: 'Товар не найден' });
             }
+
             res.json({ message: 'Товар удален' });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Ошибка при удалении товара' });
         }
     }
+
 };
