@@ -3,6 +3,7 @@ const cors = require('cors');
 const sequelize = require('./config/db');
 const cookieParser = require('cookie-parser'); // Добавьте это
 const authRoutes = require('./routes/authRoutes');
+const productsRoutes = require('./routes/api');
 require('dotenv').config();
 
 const app = express();
@@ -33,6 +34,7 @@ sequelize
     });
 
 app.use('/api', authRoutes);
+app.use('/api/products', productsRoutes);
 
 app.get('/', (req, res) => {
     res.send('API работает!');

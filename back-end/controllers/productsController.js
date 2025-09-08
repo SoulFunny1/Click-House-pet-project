@@ -1,7 +1,48 @@
-const Product = require('../models/Product');
-const Category = require('../models/Category');
+const Product = require('../models/products');
+const Category = require('../models/category');
+const { Op } = require('sequelize');
 
+
+exports.getFilteredProducts = async (req, res) => {
+    try {
+        const filter = req.query.filter;
+        let where = {};
+
+        if (filter === 'nalichii') {
+            where.stock = { [Op.gt]: 0 }; // товары в наличии
+        }
+        if (filter === 'popular') {
+            where.is_popular = true; // популярные товары
+        }
+
+        const products = await Product.findAll({ where });
+        res.json(products);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Ошибка при получении товаров' });
+    }
+};
 module.exports = {
+    async getFilteredProducts(req, res) {
+        try {
+            const filter = req.query.filter;
+            let where = {};
+
+            if (filter === 'nalichii') {
+                where.stock = { [Op.gt]: 0 }; // товары в наличии
+            }
+            if (filter === 'popular') {
+                where.is_popular = true; // популярные товары
+            }
+
+            const products = await Product.findAll({ where });
+            res.json(products);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Ошибка при получении товаров' });
+        }
+    },
+
     // ✅ Получить все товары (с категориями)
     async getAllProducts(req, res) {
         try {
@@ -73,5 +114,6 @@ module.exports = {
             res.status(500).json({ message: 'Ошибка при удалении товара' });
         }
     }
+
 
 };

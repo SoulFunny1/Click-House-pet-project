@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db'); // подключение к базе
-const Category = require('./Category');
+const Category = require('./category');
 
 const Product = sequelize.define('Product', {
     id: {

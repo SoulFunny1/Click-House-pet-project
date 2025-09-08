@@ -1,10 +1,34 @@
-import Kartochki from '../hooks/Kartochki.json';
-import Skidka from '../hooks/Skidki.json'
-import Nalichii from '../hooks/V Nalichii.json'
-import Popular from '../hooks/Popular.json'
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function HomePage() {
+    const [kartochki, setKartochki] = useState([]);
+    const [skidka, setSkidka] = useState([]);
+    const [nalichii, setNalichii] = useState([]);
+    const [popular, setPopular] = useState([]);
+
+    useEffect(() => {
+        // Категории
+        axios.get("http://localhost:4000/api/products/categories")
+            .then(res => setKartochki(res.data))
+            .catch(err => console.error(err));
+
+        // Скидки
+        axios.get("http://localhost:4000/api/products/products?filter=skidka")
+            .then(res => setSkidka(res.data))
+            .catch(err => console.error(err));
+
+        // В наличии
+        axios.get("http://localhost:4000/api/products/products?filter=nalichii")
+            .then(res => setNalichii(res.data))
+            .catch(err => console.error(err));
+
+        // Популярные
+        axios.get("http://localhost:4000/api/products/products?filter=popular")
+            .then(res => setPopular(res.data))
+            .catch(err => console.error(err));
+    }, []);
+
     const slides = ["./HomeImage.svg", "./HomeImage2.svg", "./HomeImage3.svg"];
     const [current, setCurrent] = useState(0);
     const prevSlide = () => {
@@ -57,7 +81,7 @@ export default function HomePage() {
 
                     {/* Правая стрелка */}
                     <div className="absolute top-[50%] right-0" onClick={nextSlide}>
-                        <svg  width="22" height="40" viewBox="0 0 22 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="22" height="40" viewBox="0 0 22 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.78467 2.21484L19.8526 20.2828L1.78467 38.3508" stroke="white" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
 
@@ -104,7 +128,7 @@ export default function HomePage() {
 
                 {/* ЭТО КАРТОЧКИ */}
                 <div className="grid grid-cols-5 gap-5 p-2">
-                    {Kartochki.map((item, index) => (
+                    {kartochki.map((item, index) => (
                         <div key={index} className="flex flex-col justify-center items-center border border-gray-300 w-[300px] h-[250px]  rounded-3xl shadow hover:shadow-lg transition">
                             <img src={item.img} alt={item.name} className="px-10 object-contain h-[150px] max-w-full" />
                             <div className='flex items-center'>
@@ -126,31 +150,25 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex flex-wrap gap-5 justify-center">
-                    {Skidka.map((item, index) => (
-                        <div
-                            key={index}
-                            className="group relative w-80 bg-white border border-gray-300 rounded-3xl shadow hover:shadow-lg transition-transform transform hover:scale-105 cursor-pointer overflow-hidden"
-                        >
-
+                    {skidka.map((item, index) => (
+                        <div key={index} className="group relative w-80 bg-white border border-gray-300 rounded-3xl shadow hover:shadow-lg transition-transform transform hover:scale-105 cursor-pointer overflow-hidden">
                             <div className="w-full h-80 flex items-center justify-center">
                                 <img
-                                    src={item.img}
-                                    alt={item.text}
+                                    src={item.image_url} 
+                                    alt={item.name}     
                                     className="max-h-full object-contain"
                                 />
                             </div>
-
-                            {item.skidka && (
+                            {item.discount > 0 && ( 
                                 <div className="text-red-500 text-[18px] font-bold px-3 py-1 rounded-full">
-                                    {item.skidka}
+                                    {item.discount}% 
                                 </div>
                             )}
-
                             <div className="p-4 flex flex-col gap-2">
-                                <p className="text-lg font-semibold text-gray-800">{item.text}</p>
-
+                                <p className="text-lg font-semibold text-gray-800">{item.name}</p> 
                                 <div className="flex items-center gap-2">
-                                    <span className="text-xl font-bold text-[#FF9900]">{item.price}</span>
+                                    <span className="text-xl font-bold text-[#FF9900]">{item.price}</span> 
+                                    {/* Цена до скидки (price2) */}
                                     {item.price2 && (
                                         <span className="text-gray-400 line-through text-sm">
                                             {item.price2}
@@ -158,7 +176,7 @@ export default function HomePage() {
                                     )}
                                 </div>
                             </div>
-
+                            {/* Кнопка корзины */}
                             <button
                                 className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-3 bg-[#FF9900] text-white font-bold px-5 py-2 rounded-full shadow-lg transition-all duration-300 hover:bg-[#e68a00]"
                             >
@@ -176,33 +194,26 @@ export default function HomePage() {
                         <p className='text-[18px]'>Все товары в категории -</p>
                     </div>
                 </div>
-
-
                 <div className="flex flex-wrap gap-5 justify-center">
-                    {Nalichii.map((item, index) => (
-                        <div
-                            key={index}
-                            className="relative group  w-80 bg-white border border-gray-300 rounded-3xl shadow hover:shadow-lg transition-transform transform hover:scale-105 cursor-pointer overflow-hidden"
-                        >
+                    {nalichii.map((item, index) => (
+                        <div key={index} className="relative group w-80 bg-white border border-gray-300 rounded-3xl shadow hover:shadow-lg transition-transform transform hover:scale-105 cursor-pointer overflow-hidden">
                             <div className="w-full h-80 flex items-center justify-center">
                                 <img
-                                    src={item.img}
-                                    alt={item.text}
+                                    src={item.image_url}
+                                    alt={item.name}   
                                     className="max-h-full object-contain"
                                 />
                             </div>
-
-                            {item.skidka && (
+                            {item.discount > 0 && ( 
                                 <div className="absolute bottom-[110px] text-red-500 text-[18px] font-bold px-4 py-1 rounded-full">
-                                    {item.skidka}
+                                    {item.discount}% 
                                 </div>
                             )}
-
                             <div className="p-4 flex flex-col gap-2">
-                                <p className="text-lg font-semibold text-gray-800">{item.text}</p>
-
+                                <p className="text-lg font-semibold text-gray-800">{item.name}</p> 
                                 <div className="flex items-center gap-2">
-                                    <span className="text-xl font-bold text-[#FF9900]">{item.price}</span>
+                                    <span className="text-xl font-bold text-[#FF9900]">{item.price}</span> 
+                                    {/* Цена до скидки (price2) */}
                                     {item.price2 && (
                                         <span className="text-gray-400 line-through text-sm">
                                             {item.price2}
@@ -210,7 +221,6 @@ export default function HomePage() {
                                     )}
                                 </div>
                             </div>
-
                             <button
                                 className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-3 bg-[#FF9900] text-white font-bold px-5 py-2 rounded-full shadow-lg transition-all duration-300 hover:bg-[#e68a00]"
                             >
@@ -226,32 +236,26 @@ export default function HomePage() {
                         <p className='text-[18px]'>Все товары в категории -</p>
                     </div>
                 </div>
-
                 <div className="flex flex-wrap gap-5 justify-center">
-                    {Popular.map((item, index) => (
-                        <div
-                            key={index}
-                            className="group relative w-80 bg-white border border-gray-300 rounded-3xl shadow hover:shadow-lg transition-transform transform hover:scale-105 cursor-pointer overflow-hidden"
-                        >
+                    {popular.map((item, index) => (
+                        <div key={index} className="group relative w-80 bg-white border border-gray-300 rounded-3xl shadow hover:shadow-lg transition-transform transform hover:scale-105 cursor-pointer overflow-hidden">
                             <div className="w-full h-80 flex items-center justify-center">
                                 <img
-                                    src={item.img}
-                                    alt={item.text}
+                                    src={item.image_url}
+                                    alt={item.name}    
                                     className="max-h-full object-contain"
                                 />
                             </div>
-
-                            {item.skidka && (
+                            {item.discount > 0 && ( 
                                 <div className="text-red-500 text-[18px] font-bold px-3 py-1 rounded-full">
-                                    {item.skidka}
+                                    {item.discount}%
                                 </div>
                             )}
-
                             <div className="p-4 flex flex-col gap-2">
-                                <p className="text-lg font-semibold text-gray-800">{item.text}</p>
-
+                                <p className="text-lg font-semibold text-gray-800">{item.name}</p>
                                 <div className="flex items-center gap-2">
                                     <span className="text-xl font-bold text-[#FF9900]">{item.price}</span>
+                                    {/* Цена до скидки (price2) */}
                                     {item.price2 && (
                                         <span className="text-gray-400 line-through text-sm">
                                             {item.price2}
@@ -259,7 +263,6 @@ export default function HomePage() {
                                     )}
                                 </div>
                             </div>
-
                             <button
                                 className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-3 bg-[#FF9900] text-white font-bold px-5 py-2 rounded-full shadow-lg transition-all duration-300 hover:bg-[#e68a00]"
                             >
