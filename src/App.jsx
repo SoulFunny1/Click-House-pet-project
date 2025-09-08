@@ -8,10 +8,23 @@ import Menu from './components/common/Menu';
 import SideBar from './components/SideBar';
 import Catalog from './pages/Catalog';
 import Auth from './components/Auth';
+import Verify from './components/Verify';
+import PersAccount from './components/PersAccount';
 
 export default function App() {
   const [open, setOpen] = useState(false);
   const [openAuth, setOpenAuth] = useState(false);
+  const [openVerify, setOpenVerify] = useState(false);
+  const [openPersAccount, setOpenPersAccount] = useState(false);
+
+  function handleOpen() {
+    setOpenVerify(true);
+    setOpenAuth(false);
+  }
+  function handleOpenAuth() {
+    setOpenAuth(true);
+    setOpenVerify(false);
+  }
 
   return (
     <div>
@@ -22,11 +35,15 @@ export default function App() {
 
 
       <SideBar open={open} onClose={() => setOpen(false)} />
-      <Auth open={openAuth} onClose={() => setOpenAuth(false)} />
+      <PersAccount open={openPersAccount} onClose={() => setOpenPersAccount(false)} />
+      <Auth onOpenVerify={() => handleOpen()} open={openAuth} onClose={() => setOpenAuth(false)} />
+      <Verify open={openVerify} onOpenAuth={() => handleOpenAuth()} onCloseAuth={() => setOpenAuth(false)} onClose={() => setOpenVerify(false)} />
+      
+      
 
 
-      <Header />
-      <Menu onOpen={() => setOpen(true)} onOpenAuth={() => setOpenAuth(true)} />
+      <Header onClosePersAccount={() => setOpenPersAccount(false)} openAuth={() => setOpenAuth(true)} />
+      <Menu onPersOpen={() => setOpenPersAccount(true)} onOpen={() => setOpen(true)}  />
 
 
       <Routes>

@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Auth({ open, onClose }) {
+export default function Auth({ open, onClose, onOpenVerify }) {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleRegister = async (e) => {
-        e.preventDefault(); // отменяем перезагрузку страницы
+        e.preventDefault(); 
 
         if (password !== confirmPassword) {
             alert("Пароли не совпадают");
@@ -26,6 +27,16 @@ export default function Auth({ open, onClose }) {
 
             const data = await response.json();
             console.log("Ответ сервера:", data);
+
+            if (response.ok) {
+                onClose();
+                onOpenVerify();
+                Swal.fire({
+                    title: 'Успешная регистрация',
+                    text: 'Требуется подтверждение',
+                    icon: 'success',
+                }); 
+            }
         } catch (error) {
             console.error("Ошибка запроса:", error);
         }
@@ -33,7 +44,7 @@ export default function Auth({ open, onClose }) {
 
     return (
         <div
-            className={`bg-white w-[400px] fixed top-0 right-0 h-screen shadow-lg transform transition-transform duration-300 ease-in-out z-50
+            className={`bg-white w-[400px] fixed top-0 right-0 h-screen shadow-lg transform transition-transform duration-300 ease-in-out z-100
                 ${open ? "translate-x-0" : "translate-x-full"}`}
         >
             <header className="flex flex-col">
@@ -87,11 +98,8 @@ export default function Auth({ open, onClose }) {
                             </button>
                         </form>
                         <div className="flex justify-center gap-30 p-5">
-                            <p className="text-[#5A5A5A]">Вход</p>
+                            <p onClick={onOpenVerify} className="text-[#5A5A5A]">Вход</p>
                             <p className="text-[#5A5A5A]">Восстановление пароля</p>
-                        </div>
-                        <div className="px-9">
-                            <p className="font-semibold">Регистрация через социальную сеть</p>
                         </div>
                     </div>
                 </div>

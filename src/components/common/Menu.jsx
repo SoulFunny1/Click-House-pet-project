@@ -1,4 +1,4 @@
-    export default function Menu({onOpen, onOpenAuth}) {
+    export default function Menu({onOpen, onPersOpen}) {
         return (
             <div className="">
                 <header className="flex justify-between items-center p-5">
@@ -17,7 +17,7 @@
                     <div className="flex gap-3 mx-35">
                         <img src="./Star menu.svg" alt="" />
                         <img src="./Korz Menu.svg" alt="" />
-                        <img onClick={onOpenAuth}  src="./Man menu.svg" alt="" />
+                        <img onClick={onPersOpen}  src="./Man menu.svg" alt="" />
                     </div>
                 </header>
             </div>
