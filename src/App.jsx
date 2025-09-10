@@ -1,3 +1,5 @@
+// src/App.js
+
 import { Routes, Route } from 'react-router-dom';
 import { useState } from "react";
 
@@ -10,6 +12,7 @@ import Catalog from './pages/Catalog';
 import Auth from './components/Auth';
 import Verify from './components/Verify';
 import PersAccount from './components/PersAccount';
+import ADMINKA from './components/ADMINKA';
 
 export default function App() {
   const [open, setOpen] = useState(false);
@@ -29,29 +32,26 @@ export default function App() {
   return (
     <div>
       <div
-        className={`fixed top-0 left-0 h-screen w-full  transition-20 duration-300 ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+        className={`fixed top-0 left-0 h-screen w-full transition-20 duration-300 ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
         onClick={() => setOpen(false)}
       ></div>
 
+      <Header onClosePersAccount={() => setOpenPersAccount(false)} openAuth={() => setOpenAuth(true)} />
+      <Menu onPersOpen={() => setOpenPersAccount(true)} onOpen={() => setOpen(true)} />
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="*" element={<div>404 - Страница не найдена</div>} />
+        <Route path="/adminka" element={<ADMINKA />} />
+      </Routes>
 
       <SideBar open={open} onClose={() => setOpen(false)} />
       <PersAccount open={openPersAccount} onClose={() => setOpenPersAccount(false)} />
-      <Auth onOpenVerify={() => handleOpen()} open={openAuth} onClose={() => setOpenAuth(false)} />
+      {openAuth && <Auth onOpenVerify={() => handleOpen()} open={openAuth} onClose={() => setOpenAuth(false)} />}
       <Verify open={openVerify} onOpenAuth={() => handleOpenAuth()} onCloseAuth={() => setOpenAuth(false)} onClose={() => setOpenVerify(false)} />
-      
-      
-
-
-      <Header onClosePersAccount={() => setOpenPersAccount(false)} openAuth={() => setOpenAuth(true)} />
-      <Menu onPersOpen={() => setOpenPersAccount(true)} onOpen={() => setOpen(true)}  />
-
-
-      <Routes>
-        <Route path="/" element={<HomePage />}  />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="*" element={<div>404 - Страница не найдена</div>} />
-      </Routes>
       <Footer />
     </div>
   );
 }
+

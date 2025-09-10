@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
 export default function SideBar({ open, onClose }) {
     const navigate = useNavigate();
 
@@ -25,14 +26,15 @@ export default function SideBar({ open, onClose }) {
                     <p onClick={() => handleNavigate("/catalog")} className="font-extrabold text-[24px] cursor-pointer">
                         Каталог
                     </p>
-                    <p className="font-extrabold text-[24px]">Товары в наличии</p>
-                    <p className="font-extrabold text-[24px]">Скидки</p>
-                    <p className="font-extrabold text-[24px]">Популярное</p>
+                    <HashLink to="/#available-products" className="font-extrabold text-[24px]">Товары в наличии</HashLink>
+                    <HashLink to="/#skidki" className="font-extrabold text-[24px]">Скидки</HashLink>
+                    <HashLink to="/#popular" className="font-extrabold text-[24px]">Популярное</HashLink>
                     <p className="font-extrabold text-[24px]">Вдохновение</p>
                     <p className="text-[#5A5A5A]">Доставка</p>
                     <p className="text-[#5A5A5A]">Услуги</p>
                     <p className="text-[#5A5A5A]">Условия</p>
                     <p className="text-[#5A5A5A]">Контакты</p>
+                    <p onClick={() => handleNavigate("/adminka")} className="text-[#5A5A5A] text-[30px] font-extrabold">Админ панель</p>
                 </div>
             </header>
         </div>

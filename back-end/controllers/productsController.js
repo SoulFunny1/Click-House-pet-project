@@ -1,119 +1,62 @@
-const Product = require('../models/products');
+const Product = require('../models/product');
 const Category = require('../models/category');
-const { Op } = require('sequelize');
 
-
-exports.getFilteredProducts = async (req, res) => {
-    try {
-        const filter = req.query.filter;
-        let where = {};
-
-        if (filter === 'nalichii') {
-            where.stock = { [Op.gt]: 0 }; // товары в наличии
-        }
-        if (filter === 'popular') {
-            where.is_popular = true; // популярные товары
-        }
-
-        const products = await Product.findAll({ where });
-        res.json(products);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Ошибка при получении товаров' });
-    }
-};
 module.exports = {
-    async getFilteredProducts(req, res) {
-        try {
-            const filter = req.query.filter;
-            let where = {};
-
-            if (filter === 'nalichii') {
-                where.stock = { [Op.gt]: 0 }; // товары в наличии
-            }
-            if (filter === 'popular') {
-                where.is_popular = true; // популярные товары
-            }
-
-            const products = await Product.findAll({ where });
-            res.json(products);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: 'Ошибка при получении товаров' });
-        }
-    },
-
-    // ✅ Получить все товары (с категориями)
+    // Все продукты
     async getAllProducts(req, res) {
         try {
             const products = await Product.findAll({
-                include: [{ model: Category, as: 'category', attributes: ['id', 'name'] }]
+                include: [{ model: Category, as: 'category' }]
             });
             res.json(products);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Ошибка при получении товаров' });
+        } catch (err) {
+            res.status(500).json({ error: 'Ошибка при получении товаров' });
         }
     },
 
-    // ✅ Получить товар по ID
+    // Один продукт
     async getProductById(req, res) {
         try {
-            const { id } = req.params;
+            const { id } = req.query; // т.к. у тебя всё через GET/POST
             const product = await Product.findByPk(id, {
-                include: [{ model: Category, as: 'category', attributes: ['id', 'name'] }]
+                include: [{ model: Category, as: 'category' }]
             });
-            if (!product) {
-                return res.status(404).json({ message: 'Товар не найден' });
-            }
+            if (!product) return res.status(404).json({ error: 'Товар не найден' });
             res.json(product);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Ошибка при получении товара' });
+        } catch (err) {
+            res.status(500).json({ error: 'Ошибка при получении товара' });
         }
     },
 
-    // ✅ Добавить товар
+    // Создать продукт
     async createProduct(req, res) {
         try {
-            const { category_id, name, img, price, old_price, discount, is_popular, in_stock } = req.body;
-            const product = await Product.create({
-                category_id,
-                name,
-                img,
-                price,
-                old_price,
-                discount,
-                is_popular,
-                in_stock
-            });
+            const product = await Product.create(req.body);
             res.json(product);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Ошибка при создании товара' });
+        } catch (err) {
+            res.status(500).json({ error: 'Ошибка при создании товара' });
         }
     },
 
-    // ✅ Удалить товар
+    // Обновить продукт
+    async updateProduct(req, res) {
+        try {
+            const { id } = req.body;
+            await Product.update(req.body, { where: { id } });
+            res.json({ message: 'Товар обновлен' });
+        } catch (err) {
+            res.status(500).json({ error: 'Ошибка при обновлении товара' });
+        }
+    },
+
+    // Удалить продукт
     async deleteProduct(req, res) {
         try {
-            const { id } = req.body; // Берем id из тела запроса
-            if (!id) {
-                return res.status(400).json({ message: 'ID товара не передан' });
-            }
-
-            const deleted = await Product.destroy({ where: { id } });
-
-            if (!deleted) {
-                return res.status(404).json({ message: 'Товар не найден' });
-            }
-
-            res.json({ message: 'Товар удален' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Ошибка при удалении товара' });
+            const { id } = req.body;
+            await Product.destroy({ where: { id } });
+            res.json({ message: 'Товар удалён' });
+        } catch (err) {
+            res.status(500).json({ error: 'Ошибка при удалении товара' });
         }
-    }
-
-
+    },
 };

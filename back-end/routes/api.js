@@ -7,18 +7,22 @@ const productsController = require('../controllers/productsController');
 router.get('/categories', categoriesController.getAllCategories);
 router.post('/categories', categoriesController.createCategory);
 
-// Товары
-router.get('/products', (req, res) => {
-  const filter = req.query.filter;
-  if (filter) {
-    productsController.getFilteredProducts(req, res);
-  } else {
-    productsController.getAllProducts(req, res);
-  }
-});
-router.get('/products/:id', productsController.getProductById);
-router.post('/products', productsController.createProduct);
-router.post('/products/delete', productsController.deleteProduct);
+// Все товары
+router.get('/all', productsController.getAllProducts);
 
+// Один товар (через ?id=)
+router.get('/get', productsController.getProductById);
+
+// Фильтрация (например ?filter=popular)
+router.get('/filter', productsController.getFilteredProducts);
+
+// Создать товар
+router.post('/create', productsController.createProduct);
+
+// Обновить товар
+router.post('/update', productsController.updateProduct);
+
+// Удалить товар
+router.post('/delete', productsController.deleteProduct);
 
 module.exports = router;

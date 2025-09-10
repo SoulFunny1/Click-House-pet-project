@@ -1,7 +1,6 @@
 const Category = require('../models/category');
 
 module.exports = {
-    // ✅ Получить все категории
     async getAllCategories(req, res) {
         try {
             const categories = await Category.findAll();
@@ -12,7 +11,6 @@ module.exports = {
         }
     },
 
-    // ✅ Добавить категорию
     async createCategory(req, res) {
         try {
             const { name, img } = req.body;

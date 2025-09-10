@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
 
 export default function HomePage() {
     const [kartochki, setKartochki] = useState([]);
@@ -143,7 +145,7 @@ export default function HomePage() {
 
 
                 <div className='flex items-center p-5 gap-4'>
-                    <p className='text-[36px] font-bold'>Скидки <span className='text-red-500 font-light' >%</span></p>
+                    <p id="skidki" className='text-[36px] font-bold'>Скидки <span className='text-red-500 font-light' >%</span></p>
                     <div className='mt-3'>
                         <p className='text-[18px]'>Все товары в категории -</p>
                     </div>
@@ -189,7 +191,7 @@ export default function HomePage() {
 
 
                 <div className='flex items-center p-5 gap-4'>
-                    <p className='text-[36px] font-bold'>Товары в наличии</p>
+                    <p id="available-products" className='text-[36px] font-bold'>Товары в наличии</p>
                     <div className='mt-3'>
                         <p className='text-[18px]'>Все товары в категории -</p>
                     </div>
@@ -231,7 +233,7 @@ export default function HomePage() {
                 </div>
 
                 <div className='flex items-center p-5 gap-4'>
-                    <p className='text-[36px] font-bold'>Популярное</p>
+                    <p id="popular" className='text-[36px] font-bold'>Популярное</p>
                     <div className='mt-3'>
                         <p className='text-[18px]'>Все товары в категории -</p>
                     </div>

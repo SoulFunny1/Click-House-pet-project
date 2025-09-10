@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // подключение к базе
+const sequelize = require('../config/db');
 const Category = require('./category');
 
 const Product = sequelize.define('Product', {
@@ -21,16 +21,20 @@ const Product = sequelize.define('Product', {
         allowNull: false,
     },
     discount: {
-        type: DataTypes.DECIMAL(5, 2),
-        defaultValue: 0.00,
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
     },
-    is_popular: {
+    popular: { // 👈 вместо is_popular
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
-    stock: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
+    inStock: { // 👈 вместо stock
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+    },
+    sale: { // 👈 добавляем флаг "со скидкой"
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
     },
     image_url: {
         type: DataTypes.STRING,
@@ -39,11 +43,17 @@ const Product = sequelize.define('Product', {
     category_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
-    }
+        references: {
+            model: 'categories',
+            key: 'id',
+        },
+    },
 }, {
     tableName: 'products',
     timestamps: true,
 });
+
+// связи
 Product.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
 Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
 
