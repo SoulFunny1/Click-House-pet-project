@@ -1,6 +1,8 @@
+// models/product.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Category = require('./category');
+
+// 📌 УБРАТЬ: const Category = require('../models/category');
 
 const Product = sequelize.define('Product', {
     id: {
@@ -24,15 +26,15 @@ const Product = sequelize.define('Product', {
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
-    popular: { // 👈 вместо is_popular
+    popular: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
-    inStock: { // 👈 вместо stock
+    inStock: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
     },
-    sale: { // 👈 добавляем флаг "со скидкой"
+    sale: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
@@ -53,8 +55,7 @@ const Product = sequelize.define('Product', {
     timestamps: true,
 });
 
-// связи
-Product.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
-Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
+// 📌 УБРАТЬ: Product.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
+// 📌 УБРАТЬ: Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
 
 module.exports = Product;

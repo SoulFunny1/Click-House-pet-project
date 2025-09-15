@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
-export default function SideBar({ open, onClose }) {
+export default function SideBar({ open, onClose, verifyAdmin }) {
     const navigate = useNavigate();
 
     const handleNavigate = (path) => {
@@ -34,7 +34,7 @@ export default function SideBar({ open, onClose }) {
                     <p className="text-[#5A5A5A]">Услуги</p>
                     <p className="text-[#5A5A5A]">Условия</p>
                     <p className="text-[#5A5A5A]">Контакты</p>
-                    <p onClick={() => handleNavigate("/adminka")} className="text-[#5A5A5A] text-[30px] font-extrabold">Админ панель</p>
+                    <p v-if="verifyAdmin" onClick={() => handleNavigate("/adminka")} className="text-[#5A5A5A] text-[30px] font-extrabold">Админ панель</p>
                 </div>
             </header>
         </div>

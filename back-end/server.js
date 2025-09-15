@@ -17,18 +17,18 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// Подключение роутов
-app.use('/api', authRoutes);
+// Роуты
+app.use('/api/auth', authRoutes);
 app.use('/api', apiRoutes);
 
 app.get('/', (req, res) => {
     res.send('API работает!');
 });
 
-// Запуск сервера
+// Подключение к БД и запуск
 sequelize.authenticate()
     .then(() => {
         console.log('Подключение к базе данных установлено успешно.');
-        app.listen(PORT, () => console.log(`Сервер запущен на http://localhost:${PORT}`));
+        app.listen(PORT, () => console.log(`Сервер запущен: http://localhost:${PORT}`));
     })
     .catch((err) => console.error('Ошибка подключения к БД:', err));

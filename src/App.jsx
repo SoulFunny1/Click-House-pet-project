@@ -19,6 +19,7 @@ export default function App() {
   const [openAuth, setOpenAuth] = useState(false);
   const [openVerify, setOpenVerify] = useState(false);
   const [openPersAccount, setOpenPersAccount] = useState(false);
+  const [verifyAdmin, setVerifyAdmin] = useState(false);
 
   function handleOpen() {
     setOpenVerify(true);
@@ -28,7 +29,10 @@ export default function App() {
     setOpenAuth(true);
     setOpenVerify(false);
   }
-
+  function verifyAdmin() {
+    const token = localStorage.getItem('token');
+    
+  }
   return (
     <div>
       <div
@@ -46,7 +50,7 @@ export default function App() {
         <Route path="/adminka" element={<ADMINKA />} />
       </Routes>
 
-      <SideBar open={open} onClose={() => setOpen(false)} />
+      <SideBar verifyAdmin={verifyAdmin} open={open} onClose={() => setOpen(false)} />
       <PersAccount open={openPersAccount} onClose={() => setOpenPersAccount(false)} />
       {openAuth && <Auth onOpenVerify={() => handleOpen()} open={openAuth} onClose={() => setOpenAuth(false)} />}
       <Verify open={openVerify} onOpenAuth={() => handleOpenAuth()} onCloseAuth={() => setOpenAuth(false)} onClose={() => setOpenVerify(false)} />

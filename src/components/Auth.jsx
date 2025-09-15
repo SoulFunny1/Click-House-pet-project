@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+
 
 export default function Auth({ open, onClose, onOpenVerify }) {
     const [phone, setPhone] = useState("");
@@ -16,7 +18,7 @@ export default function Auth({ open, onClose, onOpenVerify }) {
         }
 
         try {
-            const response = await fetch("http://localhost:4000/api/register", {
+            const response = await fetch("http://localhost:4000/api/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

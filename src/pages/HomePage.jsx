@@ -11,22 +11,22 @@ export default function HomePage() {
 
     useEffect(() => {
         // Категории
-        axios.get("http://localhost:4000/api/products/categories")
+        axios.get("http://localhost:4000/api/categories")
             .then(res => setKartochki(res.data))
             .catch(err => console.error(err));
 
         // Скидки
-        axios.get("http://localhost:4000/api/products/products?filter=skidka")
+        axios.get("http://localhost:4000/api/products?filter=skidka")
             .then(res => setSkidka(res.data))
             .catch(err => console.error(err));
 
         // В наличии
-        axios.get("http://localhost:4000/api/products/products?filter=nalichii")
+        axios.get("http://localhost:4000/api/products?filter=nalichii")
             .then(res => setNalichii(res.data))
             .catch(err => console.error(err));
 
         // Популярные
-        axios.get("http://localhost:4000/api/products/products?filter=popular")
+        axios.get("http://localhost:4000/api/products?filter=popular")
             .then(res => setPopular(res.data))
             .catch(err => console.error(err));
     }, []);
