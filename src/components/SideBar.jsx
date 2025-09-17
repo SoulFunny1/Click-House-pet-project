@@ -34,7 +34,14 @@ export default function SideBar({ open, onClose, verifyAdmin }) {
                     <p className="text-[#5A5A5A]">Услуги</p>
                     <p className="text-[#5A5A5A]">Условия</p>
                     <p className="text-[#5A5A5A]">Контакты</p>
-                    <p v-if="verifyAdmin" onClick={() => handleNavigate("/adminka")} className="text-[#5A5A5A] text-[30px] font-extrabold">Админ панель</p>
+                    {verifyAdmin && (
+                        <p
+                            onClick={() => handleNavigate("/adminka")}
+                            className="text-[#5A5A5A] text-[30px] font-extrabold"
+                        >
+                            Админ панель
+                        </p>
+                    )}
                 </div>
             </header>
         </div>

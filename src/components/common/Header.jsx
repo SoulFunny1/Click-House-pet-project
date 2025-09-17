@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
-export default function Header({ openAuth, onClosePersAccount }) {
+export default function Header({ openAuth, onClosePersAccount, }) {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
@@ -19,20 +20,38 @@ export default function Header({ openAuth, onClosePersAccount }) {
 
     function handleAuthClick() {
         if (isLoggedIn) {
-            localStorage.removeItem("token");
-            onClosePersAccount();
-            setIsLoggedIn(false);
-            fetch("http://localhost:4000/api/logout", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+            Swal.fire({
+                title: "Выход",
+                text: "Вы уверены, что хотите выйти?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Да, выйти",
+                cancelButtonText: "Отменить"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem("token");
+                    onClosePersAccount();
+                    setIsLoggedIn(false);
+                    fetch("http://localhost:4000/api/auth/logout", {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        }
+                    }).catch(() => console.log("Ошибка при логауте на сервере"));
+                    navigate("/");
+                    window.location.reload();
                 }
-            }).catch(() => console.log("Ошибка при логауте на сервере"));
-            navigate("/");
+            });
         } else {
-            openAuth(); 
+            openAuth();
         }
+
+
+
+
     }
 
     useEffect(() => {
@@ -43,10 +62,11 @@ export default function Header({ openAuth, onClosePersAccount }) {
         }, 500);
 
         return () => clearInterval(interval);
+
     }, [isLoggedIn]);
 
     return (
-        <header className="relative">
+        <header className="relative ">
             <div className="bg-[#F8F8F8] flex justify-between">
                 <div className="p-4 mx-35">
                     <img

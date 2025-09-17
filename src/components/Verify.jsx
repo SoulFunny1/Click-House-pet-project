@@ -5,8 +5,7 @@ export default function Verify({ open, onClose, onOpenAuth, onCloseAuth }) {
     const [password, setPassword] = useState("");
 
     const handleRegister = async (e) => {
-        e.preventDefault(); // отменяем перезагрузку страницы
-
+        e.preventDefault();
         try {
             const response = await fetch("http://localhost:4000/api/auth/login", {
                 method: "POST",
@@ -18,7 +17,6 @@ export default function Verify({ open, onClose, onOpenAuth, onCloseAuth }) {
             });
 
             const data = await response.json();
-            console.log("Ответ сервера:", data);
 
             if (response.ok) {
                 onClose();
@@ -30,8 +28,11 @@ export default function Verify({ open, onClose, onOpenAuth, onCloseAuth }) {
                     icon: 'success',
                 });
                 localStorage.setItem('token', data.jwt);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 700);
             }
-            if(response.status === 401) {
+            if (response.status === 401) {
                 Swal.fire({
                     title: 'Авторизация не удалась',
                     text: 'Проверьте введенные данные',
@@ -41,10 +42,10 @@ export default function Verify({ open, onClose, onOpenAuth, onCloseAuth }) {
         } catch (error) {
             console.error("Ошибка запроса:", error);
             Swal.fire({
-                    title: 'Авторизация не удалась',
-                    text: 'Ошибка сервера',
-                    icon: 'error',
-                });
+                title: 'Авторизация не удалась',
+                text: 'Ошибка сервера',
+                icon: 'error',
+            });
         }
     };
 

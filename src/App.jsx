@@ -13,6 +13,9 @@ import Auth from './components/Auth';
 import Verify from './components/Verify';
 import PersAccount from './components/PersAccount';
 import ADMINKA from './components/ADMINKA';
+import Shopping from './components/Shopping';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 export default function App() {
   const [open, setOpen] = useState(false);
@@ -20,6 +23,7 @@ export default function App() {
   const [openVerify, setOpenVerify] = useState(false);
   const [openPersAccount, setOpenPersAccount] = useState(false);
   const [verifyAdmin, setVerifyAdmin] = useState(false);
+
 
   function handleOpen() {
     setOpenVerify(true);
@@ -29,10 +33,26 @@ export default function App() {
     setOpenAuth(true);
     setOpenVerify(false);
   }
-  function verifyAdmin() {
-    const token = localStorage.getItem('token');
-    
-  }
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/auth/me', {
+          withCredentials: true, // ✅ важно для передачи cookies
+        });
+        console.log('Response:', response.data);
+        if (response.data.role === 'admin') {
+          setVerifyAdmin(true);
+        }
+      } catch (err) {
+        console.error('Ошибка при получении пользователя:', err);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+
+
   return (
     <div>
       <div
@@ -41,18 +61,20 @@ export default function App() {
       ></div>
 
       <Header onClosePersAccount={() => setOpenPersAccount(false)} openAuth={() => setOpenAuth(true)} />
-      <Menu onPersOpen={() => setOpenPersAccount(true)} onOpen={() => setOpen(true)} />
+      <Menu onShop={() => setShop(true)} onPersOpen={() => setOpenPersAccount(true)} onOpen={() => setOpen(true)} />
 
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="*" element={<div>404 - Страница не найдена</div>} />
         <Route path="/adminka" element={<ADMINKA />} />
+        <Route path="/shop" element={<Shopping />} />
       </Routes>
-
+      
       <SideBar verifyAdmin={verifyAdmin} open={open} onClose={() => setOpen(false)} />
       <PersAccount open={openPersAccount} onClose={() => setOpenPersAccount(false)} />
       {openAuth && <Auth onOpenVerify={() => handleOpen()} open={openAuth} onClose={() => setOpenAuth(false)} />}
+
       <Verify open={openVerify} onOpenAuth={() => handleOpenAuth()} onCloseAuth={() => setOpenAuth(false)} onClose={() => setOpenVerify(false)} />
       <Footer />
     </div>

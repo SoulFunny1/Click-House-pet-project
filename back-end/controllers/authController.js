@@ -141,7 +141,7 @@ const findPerson = async (req, res) => {
 
         // Поиск пользователя по ID
         const user = await User.findByPk(decoded.userId, {
-            attributes: ['id', 'email', 'phone'] // не возвращаем пароль
+            attributes: ['id', 'email', 'phone', 'role'] // не возвращаем пароль
         });
 
         if (!user) {
